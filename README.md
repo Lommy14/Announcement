@@ -1,14 +1,4 @@
-<html lang="th">
-// ---------------- Exercise selection & calculation ----------------
-let selectedExerciseId = null;
-function selectExercise(id){ selectedExerciseId = id; // highlight UI
-$all('.ex-card').forEach((el,i)=> el.style.boxShadow = EXERCISE_DATA[i].id===id ? '0 4px 12px rgba(6,95,70,0.12)' : 'none'); }
 
-
-function addExerciseFromSelected(){ if(!selectedExerciseId){ alert('โปรดเลือกส่วนของร่างกายก่อน'); return; }
-const ex = EXERCISE_DATA.find(e=>e.id===selectedExerciseId);
-const mins = Math.max(1, Number(exMin.value)||0);
-const kcalPerMin = scaledBurnRate(ex.basePerMin, STATE.weight);
 const burned = Math.round(kcalPerMin * mins);
 STATE.burned += burned;
 addPoints(Math.round(burned/5));
