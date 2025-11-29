@@ -1,4 +1,6 @@
-<!doctype html>
+<html lang="th">
+// ---------------- Exercise selection & calculation ----------------
+let selectedExerciseId = null;
 function selectExercise(id){ selectedExerciseId = id; // highlight UI
 $all('.ex-card').forEach((el,i)=> el.style.boxShadow = EXERCISE_DATA[i].id===id ? '0 4px 12px rgba(6,95,70,0.12)' : 'none'); }
 
