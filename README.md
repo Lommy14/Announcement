@@ -2,43 +2,250 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>เกมคำนวณแคลอรี่ & การออกกำลังกาย (พร้อมเครื่องมือคำนวณ)</title>
+  <title>เกมคำนวณแคลอรี่ & การออกกำลังกาย</title>
   <style>
-    * { box-sizing: border-box; font-family: "Sarabun", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-    body { margin:0; padding:0; background:#f3f6fb; display:flex; justify-content:center; align-items:flex-start; min-height:100vh; }
-    .container { max-width:1100px; width:100%; margin:24px; background:#ffffff; border-radius:16px; padding:24px 28px 32px; box-shadow:0 12px 30px rgba(0,0,0,0.08); }
-    h1 { margin-top:0; font-size:26px; text-align:center; color:#1f3b70; }
-    h2 { font-size:20px; margin-bottom:8px; color:#1f3b70; }
-    p { margin:4px 0 8px; font-size:14px; color:#444; }
-    .flex { display:flex; gap:16px; flex-wrap:wrap; }
-    .card { background:#f9fbff; border-radius:12px; padding:16px 18px; flex:1 1 320px; min-width:260px; border:1px solid #e2e8f0; }
-    label { font-size:14px; font-weight:600; color:#1e293b; display:block; margin-bottom:6px; }
-    select, input[type="number"], input[type="text"] { width:100%; padding:8px 10px; border-radius:8px; border:1px solid #cbd5e1; font-size:14px; outline:none; }
-    select:focus, input:focus { border-color:#2563eb; box-shadow:0 0 0 2px rgba(37,99,235,0.18); }
-    button { border:none; border-radius:999px; padding:8px 16px; font-size:14px; cursor:pointer; background:#2563eb; color:#fff; font-weight:600; display:inline-flex; align-items:center; gap:4px; margin-top:8px; }
-    button.small { padding:6px 12px; font-size:13px; }
-    button.secondary { background:#64748b; }
-    .badge { display:inline-block; padding:3px 10px; border-radius:999px; font-size:12px; background:#e0edff; color:#1d4ed8; margin-right:4px; }
-    .age-info { font-size:13px; margin-top:6px; color:#475569; }
-    .tabs { display:flex; margin-top:16px; margin-bottom:8px; border-radius:999px; background:#e2e8f0; padding:4px; }
-    .tab { flex:1; text-align:center; padding:8px 10px; font-size:14px; cursor:pointer; border-radius:999px; transition:background 0.2s,color 0.2s; user-select:none; }
-    .tab.active { background:#ffffff; color:#1d4ed8; font-weight:600; box-shadow:0 1px 4px rgba(15,23,42,0.15); }
-    .tab-content { margin-top:12px; }
-    .question-box { margin-top:8px; padding:12px; border-radius:12px; background:#ffffff; border:1px solid #e2e8f0; }
-    .question-title { font-size:16px; font-weight:600; margin-bottom:6px; color:#0f172a; }
-    .question-sub { font-size:13px; color:#64748b; margin-bottom:8px; }
-    .status-row { display:flex; justify-content:space-between; font-size:13px; color:#475569; margin-top:8px; }
-    .result { margin-top:8px; padding:8px 10px; border-radius:8px; font-size:13px; background:#eff6ff; color:#1d4ed8; }
-    .result.error { background:#fef2f2; color:#b91c1c; }
-    .summary { margin-top:10px; padding:10px; border-radius:10px; background:#f1f5f9; font-size:13px; color:#0f172a; }
-    .pill-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:4px; }
-    .pill { padding:4px 10px; border-radius:999px; font-size:12px; background:#e5e7eb; color:#374151; }
-    .hint { font-size:12px; color:#6b7280; margin-top:4px; }
-    .disclaimer { margin-top:16px; font-size:11px; color:#6b7280; border-top:1px dashed #cbd5e1; padding-top:8px; }
-    /* new styles for calculator */
+    * {
+      box-sizing: border-box;
+      font-family: "Sarabun", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f3f6fb;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1100px;
+      width: 100%;
+      margin: 24px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 24px 28px 32px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 26px;
+      text-align: center;
+      color: #1f3b70;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: #1f3b70;
+    }
+
+    p {
+      margin: 4px 0 8px;
+      font-size: 14px;
+      color: #444;
+    }
+
+    .flex {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: #f9fbff;
+      border-radius: 12px;
+      padding: 16px 18px;
+      flex: 1 1 320px;
+      min-width: 260px;
+      border: 1px solid #e2e8f0;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1e293b;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    select, input[type="number"], input[type="text"] {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 14px;
+      outline: none;
+    }
+
+    select:focus, input[type="number"]:focus, input[type="text"]:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.18);
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      background: #2563eb;
+      color: #ffffff;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 8px;
+    }
+
+    button.small {
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+
+    button.secondary {
+      background: #64748b;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: #e0edff;
+      color: #1d4ed8;
+      margin-right: 4px;
+    }
+
+    .age-info {
+      font-size: 13px;
+      margin-top: 6px;
+      color: #475569;
+    }
+
+    .tabs {
+      display: flex;
+      margin-top: 16px;
+      margin-bottom: 8px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      padding: 4px;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 8px 10px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 999px;
+      transition: background 0.2s, color 0.2s;
+      user-select: none;
+    }
+
+    .tab.active {
+      background: #ffffff;
+      color: #1d4ed8;
+      font-weight: 600;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.15);
+    }
+
+    .tab-content {
+      margin-top: 12px;
+    }
+
+    .question-box {
+      margin-top: 8px;
+      padding: 12px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+    }
+
+    .question-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #0f172a;
+    }
+
+    .question-sub {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: #475569;
+      margin-top: 8px;
+    }
+
+    .result {
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .result.error {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
+    .summary {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      background: #f1f5f9;
+      font-size: 13px;
+      color: #0f172a;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    .disclaimer {
+      margin-top: 16px;
+      font-size: 11px;
+      color: #6b7280;
+      border-top: 1px dashed #cbd5e1;
+      padding-top: 8px;
+    }
+
+    /* calculator styles */
     .calc-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:10px; }
     .calc-row > * { flex:1 1 140px; }
-    .calc-result { margin-top:10px; padding:12px; border-radius:8px; background:#eef6ff; border:1px solid #dbeafe; color:#0f172a; }
+    .calc-output { margin-top:10px; padding:12px; border-radius:8px; background:#eef6ff; border:1px solid #dbeafe; color:#0f172a; }
     .muted { color:#6b7280; font-size:13px; }
   </style>
 </head>
@@ -50,52 +257,54 @@
     เลือกช่วงอายุ → เล่นเกมทายแคลอรี่อาหาร → ดูว่าจะเผาผลาญด้วยการออกกำลังกายส่วนไหนของร่างกายได้บ้าง
   </p>
 
-  <!-- NEW: Calorie Calculator Card -->
+  <!-- NEW: Calorie Guidance & Calculator -->
   <div class="card" style="margin-bottom:12px;">
-    <h2>🧮 เครื่องมือคำนวณพลังงาน (Calorie Calculator)</h2>
-    <p class="muted">คำนวณ BMR (พื้นฐาน) และ TDEE (พลังงานทั้งวัน) ด้วยสูตร Mifflin–St Jeor — เหมาะสำหรับผู้ใหญ่และวัยรุ่น (≥13 ปี)</p>
+    <h2>🧮 แนวทางการคำนวณแคลอรี่ (สรุปสั้น)</h2>
+    <p class="muted">
+      เราใช้แนวทางสองขั้นตอน:
+      <ol style="margin:6px 0 0 18px">
+        <li><strong>BMR</strong> (Basal Metabolic Rate) — พลังงานที่ร่างกายต้องการขณะพัก</li>
+        <li><strong>TDEE</strong> (Total Daily Energy Expenditure) — BMR คูณด้วยระดับกิจกรรม (Activity factor) จะได้พลังงานที่ต้องการทั้งหมดในวันนั้น</li>
+      </ol>
+      สูตรที่ใช้ (Mifflin–St Jeor) — เหมาะกับผู้ใหญ่และวัยรุ่น (อายุ ≥13 ปี):
+      <br>
+      ผู้ชาย: <code>BMR = 10 × น้ำหนัก(กก.) + 6.25 × ส่วนสูง(ซม.) − 5 × อายุ + 5</code><br>
+      ผู้หญิง: <code>BMR = 10 × น้ำหนัก(กก.) + 6.25 × ส่วนสูง(ซม.) − 5 × อายุ − 161</code>
+      <br>จากนั้น <strong>TDEE = BMR × Activity factor</strong> (ตัวอย่าง: 1.2 = นั่งมาก, 1.55 = ปานกลาง, 1.725 = ค่อนข้างหนัก)
+    </p>
 
-    <div class="calc-row">
-      <label style="width:100%;">เพศ</label>
+    <div class="calc-row" style="margin-top:10px;">
       <select id="calcSex" style="flex:0 0 160px;">
         <option value="male">ชาย</option>
         <option value="female">หญิง</option>
       </select>
 
-      <label style="width:100%;">อายุ (ปี)</label>
-      <input id="calcAge" type="number" value="16" min="10" style="flex:0 0 120px;">
-    </div>
-
-    <div class="calc-row">
-      <label style="width:100%;">น้ำหนัก (กก.)</label>
-      <input id="calcWeight" type="number" value="55" min="20">
-
-      <label style="width:100%;">ส่วนสูง (ซม.)</label>
-      <input id="calcHeight" type="number" value="165" min="80">
+      <input id="calcAge" type="number" placeholder="อายุ (ปี)" min="10" value="16" style="flex:0 0 120px;">
+      <input id="calcWeight" type="number" placeholder="น้ำหนัก (kg)" min="20" value="55" style="flex:0 0 120px;">
+      <input id="calcHeight" type="number" placeholder="ส่วนสูง (cm)" min="80" value="165" style="flex:0 0 120px;">
     </div>
 
     <div style="margin-top:8px;">
-      <label>ระดับกิจกรรม (Activity level)</label>
+      <label>ระดับกิจกรรม (Activity factor)</label>
       <select id="calcActivity">
-        <option value="1.2">นั่งมาก / ออกกำลังกายน้อย (Sedentary) — x1.2</option>
-        <option value="1.375">เบา (Light) — x1.375</option>
-        <option value="1.55" selected>ปานกลาง (Moderate) — x1.55</option>
-        <option value="1.725">หนัก (Active) — x1.725</option>
-        <option value="1.9">หนักมาก (Very active) — x1.9</option>
+        <option value="1.2">นั่งมาก / ออกกำลังกายน้อย — x1.2</option>
+        <option value="1.375">เบา — x1.375</option>
+        <option value="1.55" selected>ปานกลาง — x1.55</option>
+        <option value="1.725">หนัก — x1.725</option>
+        <option value="1.9">หนักมาก — x1.9</option>
       </select>
     </div>
 
-    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+    <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
       <button id="btnCalc" class="small">คำนวณ BMR & TDEE</button>
-      <button id="btnUseTDEE" class="small secondary">ใช้ค่า TDEE ในเกม (เปรียบเทียบ)</button>
+      <button id="btnUseTDEE" class="small secondary">เปรียบเทียบ TDEE กับแคลอรี่ในเกม</button>
       <button id="btnResetCalc" class="small">รีเซ็ต</button>
     </div>
 
-    <div id="calcOutput" class="calc-result" style="display:none;"></div>
+    <div id="calcOutput" class="calc-output" style="display:none;"></div>
 
     <div class="hint">
-      <strong>หมายเหตุ:</strong>
-      สูตร Mifflin–St Jeor เหมาะกับผู้ที่อายุ ≥13 ปี สำหรับเด็กอายุต่ำกว่า 13 ปี ควรใช้ตารางการให้พลังงานหรือปรึกษานักโภชนาการ
+      หมายเหตุ: สูตรนี้เหมาะกับผู้ที่อายุ 13 ปีขึ้นไป — สำหรับเด็กอายุต่ำกว่า 13 ปีควรใช้ตารางพลังงานตามวัยหรือปรึกษานักโภชนาการ
     </div>
   </div>
 
@@ -208,7 +417,7 @@
   </div>
 
   <div class="disclaimer">
-    ⚠️ เกมนี้ใช้ค่าประมาณเพื่อการศึกษาเท่านั้น ไม่ใช่คำแนะนำด้านโภชนาการจริง — หากมีคำถามเชิงการรักษาหรือโปรแกรมโภชนาการจริง ควรปรึกษาผู้เชี่ยวชาญ
+    ⚠️ เกมนี้ใช้ค่าประมาณเพื่อการศึกษาเท่านั้น ไม่ใช่คำแนะนำด้านโภชนาการจริง — หากต้องการแผนโภชนาการแบบเฉพาะบุคคล ควรปรึกษานักโภชนาการหรือแพทย์
   </div>
 
 </div>
@@ -225,7 +434,7 @@
   };
 
   /* -----------------------------------------------------
-      2) อาหารตัวอย่าง (เพิ่มหลากหลาย)
+      2) อาหารตัวอย่าง
   ----------------------------------------------------- */
   const foods = [
     { name: "ข้าวมันไก่", calories: 600 }, { name: "ข้าวขาหมู", calories: 700 },
@@ -250,7 +459,7 @@
   ];
 
   /* -----------------------------------------------------
-      3) ท่าออกกำลังกายใหม่ (ครบทุกส่วน)
+      3) ท่าออกกำลังกาย
   ----------------------------------------------------- */
   const exercises = [
     { part: "legs", name: "เดินเร็ว", burnPerMin: 4 }, { part: "legs", name: "วิ่งเหยาะ", burnPerMin: 8 },
@@ -269,11 +478,10 @@
   ];
 
   /* -----------------------------------------------------
-      4) ระบบแสดงข้อมูลช่วงอายุ
+      4) age info
   ----------------------------------------------------- */
   const ageGroupSelect = document.getElementById("ageGroup");
   const ageInfoDiv = document.getElementById("ageInfo");
-
   function updateAgeInfo() {
     const key = ageGroupSelect.value;
     const info = ageGroups[key];
@@ -283,17 +491,15 @@
   ageGroupSelect.addEventListener("change", updateAgeInfo);
 
   /* -----------------------------------------------------
-      5) ระบบแท็บ
+      5) tabs
   ----------------------------------------------------- */
   const tabs = document.querySelectorAll(".tab");
   const tabFood = document.getElementById("tab-food");
   const tabExercise = document.getElementById("tab-exercise");
-
   tabs.forEach(tab => {
     tab.addEventListener("click", () => {
       tabs.forEach(t => t.classList.remove("active"));
       tab.classList.add("active");
-
       if (tab.dataset.tab === "food") {
         tabFood.style.display = "block";
         tabExercise.style.display = "none";
@@ -305,10 +511,9 @@
   });
 
   /* -----------------------------------------------------
-      6) แสดงตัวอย่างอาหาร
+      6) render food preview
   ----------------------------------------------------- */
   const foodListPreview = document.getElementById("foodListPreview");
-
   function renderFoodPreview() {
     foodListPreview.innerHTML = "";
     foods.forEach(f => {
@@ -321,7 +526,7 @@
   renderFoodPreview();
 
   /* -----------------------------------------------------
-      7) เกมอาหาร (unchanged)
+      7) game food
   ----------------------------------------------------- */
   let currentFood = null;
   let questionIndex = 0;
@@ -351,24 +556,19 @@
       scoreText.textContent = 0;
       totalEaten.textContent = 0;
     }
-
     if (questionIndex >= maxQuestions) {
       showFoodSummary();
       return;
     }
-
     const randomIndex = Math.floor(Math.random() * foods.length);
     currentFood = foods[randomIndex];
-
     questionIndex++;
     foodIndexBadge.textContent = `คำถามข้อ ${questionIndex}/${maxQuestions}`;
     foodNameDiv.textContent = currentFood.name;
-
     calInput.value = "";
     foodResult.style.display = "none";
     foodQuestionBox.style.display = "block";
   }
-
   btnNewQuestion.addEventListener("click", newFoodQuestion);
 
   btnCheckFood.addEventListener("click", () => {
@@ -379,10 +579,8 @@
       foodResult.style.display = "block";
       return;
     }
-
     const diff = Math.abs(val - currentFood.calories);
     const tolerance = 50;
-
     if (diff <= tolerance) {
       score++;
       foodResult.classList.remove("error");
@@ -393,12 +591,10 @@
       foodResult.innerHTML =
         `❌ ห่างไปนิดนะ<br>เฉลย: <strong>${currentFood.calories} kcal</strong>`;
     }
-
     foodResult.style.display = "block";
     totalEatenCalories += currentFood.calories;
     totalEaten.textContent = totalEatenCalories;
     scoreText.textContent = score;
-
     if (questionIndex >= maxQuestions) {
       gameFinished = true;
       showFoodSummary();
@@ -408,7 +604,6 @@
   function showFoodSummary() {
     const ageKey = ageGroupSelect.value;
     const info = ageGroups[ageKey];
-
     foodSummary.style.display = "block";
     foodSummary.innerHTML =
       `<strong>🎉 สรุปคะแนน</strong><br>
@@ -419,7 +614,7 @@
   }
 
   /* -----------------------------------------------------
-      8) ระบบออกกำลังกาย (unchanged)
+      8) exercise system
   ----------------------------------------------------- */
   const bodyPartSelect = document.getElementById("bodyPart");
   const exerciseSelect = document.getElementById("exerciseSelect");
@@ -431,7 +626,6 @@
   function populateExerciseOptions() {
     const part = bodyPartSelect.value;
     const options = exercises.filter(e => e.part === part);
-
     exerciseSelect.innerHTML = "";
     options.forEach(e => {
       const opt = document.createElement("option");
@@ -441,7 +635,6 @@
     });
   }
   populateExerciseOptions();
-
   bodyPartSelect.addEventListener("change", populateExerciseOptions);
 
   btnCalcBurn.addEventListener("click", () => {
@@ -452,20 +645,16 @@
       exerciseResult.style.display = "block";
       return;
     }
-
     const exName = exerciseSelect.value;
     const ex = exercises.find(e => e.name === exName && e.part === bodyPartSelect.value);
     const burned = Math.round(ex.burnPerMin * minutes);
-
     exerciseResult.classList.remove("error");
     exerciseResult.style.display = "block";
     exerciseResult.innerHTML =
       `🔥 ท่า <strong>${ex.name}</strong> ${minutes} นาที<br>
        เผาผลาญประมาณ <strong>${burned} kcal</strong>`;
-
     if (totalEatenCalories > 0) {
       const ratio = (burned / totalEatenCalories * 100).toFixed(1);
-
       compareSummary.style.display = "block";
       compareSummary.innerHTML =
         `<strong>เปรียบเทียบกับการกินในเกม</strong><br>
@@ -480,11 +669,7 @@
   });
 
   /* -----------------------------------------------------
-      9) Calorie calculator logic (Mifflin–St Jeor)
-      - BMR (kcal/day)
-        ผู้ชาย: 10*weight + 6.25*height - 5*age + 5
-        ผู้หญิง:10*weight + 6.25*height - 5*age -161
-      - TDEE = BMR * activityFactor
+      9) Calorie calculator (Mifflin–St Jeor)
   ----------------------------------------------------- */
   const calcSex = document.getElementById('calcSex');
   const calcAge = document.getElementById('calcAge');
@@ -497,15 +682,12 @@
   const calcOutput = document.getElementById('calcOutput');
 
   function calcBMR(sex, age, weight, height){
-    // inputs: weight (kg), height (cm), age (years)
-    // returns BMR numeric
     if(sex === 'male'){
       return Math.round(10 * weight + 6.25 * height - 5 * age + 5);
     } else {
       return Math.round(10 * weight + 6.25 * height - 5 * age - 161);
     }
   }
-
   function formatNumber(n){ return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
 
   btnCalc.addEventListener('click', ()=>{
@@ -521,81 +703,67 @@
       return;
     }
 
-    // Warn for young children
     if(age < 13){
       calcOutput.style.display = 'block';
-      calcOutput.innerHTML = `<strong class="muted">หมายเหตุ:</strong> สูตรนี้เหมาะกับผู้ที่อายุ 13 ปีขึ้นไป. สำหรับเด็กเล็ก ควรใช้ตารางการให้พลังงานหรือปรึกษานักโภชนาการ.`;
+      calcOutput.innerHTML = `<strong class="muted">สูตรนี้เหมาะกับผู้ที่อายุ 13 ปีขึ้นไป — สำหรับเด็กเล็ก ให้ปรึกษานักโภชนาการ</strong>`;
       return;
     }
 
     const bmr = calcBMR(sex, age, weight, height);
     const tdee = Math.round(bmr * activity);
-
-    // Simple guidance for weight change (educational note)
     const deficit500 = tdee - 500;
-    const surplus500 = tdee + 500;
+    const surplus300 = tdee + 300;
 
     calcOutput.style.display = 'block';
+    calcOutput.dataset.tdee = tdee;
+    calcOutput.dataset.bmr = bmr;
     calcOutput.innerHTML =
       `<div><strong>BMR (พื้นฐาน):</strong> ${formatNumber(bmr)} kcal/วัน</div>
        <div style="margin-top:6px"><strong>TDEE (รวมกิจกรรม):</strong> ${formatNumber(tdee)} kcal/วัน</div>
        <div style="margin-top:8px" class="muted">
-         คำอธิบาย: BMR คือพลังงานที่ร่างกายใช้ขณะพัก หากต้องการรวมการเคลื่อนไหว ให้คูณด้วยระดับกิจกรรม (Activity factor) เพื่อได้ TDEE.
+         ตัวอย่างแนวทาง (ค่าประมาณ): หากต้องการลดน้ำหนักอย่างปลอดภัย อาจลด ~500 kcal/วัน → ประมาณ ${formatNumber(deficit500)} kcal/วัน
+         หากต้องการเพิ่มน้ำหนัก อาจเพิ่ม 300–500 kcal/วัน → ตัวอย่าง ${formatNumber(surplus300)} kcal/วัน
        </div>
-       <div style="margin-top:8px">
-         <strong>ตัวอย่างแนวทาง (โดยประมาณ):</strong>
-         <ul style="margin:6px 0 0 18px">
-           <li>หากต้องการ <em>ลดน้ำหนัก</em> อย่างปลอดภัย อาจตั้งเป้าลดพลังงาน ~500 kcal/วัน → ประมาณ ${formatNumber(deficit500)} kcal/วัน (ให้ปรึกษาผู้เชี่ยวชาญก่อน)</li>
-           <li>หากต้องการ <em>เพิ่มน้ำหนัก</em> อาจเพิ่มประมาณ 300–500 kcal/วัน → ตัวอย่าง ${formatNumber(surplus500)} kcal/วัน</li>
-         </ul>
-       </div>
-       <div style="margin-top:8px" class="muted"><strong>หมายเหตุสำคัญ:</strong> ข้อเสนอด้านการลด/เพิ่มน้ำหนักเป็นค่าประมาณและไม่เหมาะกับทุกคน — ปรึกษานักโภชนาการหรือแพทย์ก่อนนำไปใช้</div>`;
-
-    // store last calculated values in dataset for "use in game"
-    calcOutput.dataset.tdee = tdee;
-    calcOutput.dataset.bmr = bmr;
+       <div style="margin-top:8px" class="muted"><strong>คำเตือน:</strong> ข้อมูลนี้เป็นคำแนะนำเชิงการศึกษาเท่านั้น — ปรึกษานักโภชนาการ/แพทย์ก่อนนำไปใช้จริง</div>`;
   });
 
   btnUseTDEE.addEventListener('click', ()=>{
-    // use the TDEE to compare with game totalEatenCalories if available
     const tdee = parseInt(calcOutput.dataset.tdee);
     if(!tdee){
       calcOutput.style.display = 'block';
       calcOutput.innerHTML = `<strong class="muted">กรุณาคำนวณ TDEE ก่อน (กด "คำนวณ BMR & TDEE")</strong>`;
       return;
     }
-    // show comparison UI: if already have totalEatenCalories from game, compare; else just show guidance
     if(typeof totalEatenCalories !== 'undefined' && totalEatenCalories > 0){
-      const diff = tdee - totalEatenCalories;
       const pct = ((totalEatenCalories / tdee) * 100).toFixed(1);
       calcOutput.style.display = 'block';
       calcOutput.innerHTML += `<div style="margin-top:10px"><strong>เปรียบเทียบกับแคลอรี่จากเกม:</strong><br>
         แคลอรี่ที่กินจากเกม: <strong>${totalEatenCalories} kcal</strong><br>
-        พลังงานที่ต้องการ(โดยประมาณ): <strong>${formatNumber(tdee)} kcal/วัน</strong><br>
+        พลังงานที่ต้องการ (TDEE): <strong>${formatNumber(tdee)} kcal/วัน</strong><br>
         แคลอรี่ที่กินคิดเป็น: <strong>${pct}%</strong> ของ TDEE<br>
-        ${
-          totalEatenCalories <= tdee
+        ${ totalEatenCalories <= tdee
             ? '<div class="muted" style="margin-top:6px">ถ้าวันนี้กินเท่านี้ ยังอยู่ในขอบเขตพลังงานที่ประมาณได้</div>'
             : '<div class="muted" style="margin-top:6px">วันนี้กินเกิน TDEE หากกินบ่อย อาจต้องพิจารณาปรับพฤติกรรมหรือปรึกษาผู้เชี่ยวชาญ</div>'
-        }
-      </div>`;
+        }</div>`;
     } else {
       calcOutput.style.display = 'block';
-      calcOutput.innerHTML += `<div style="margin-top:10px" class="muted">ยังไม่ได้เล่นโหมดเกมอาหาร (หรือไม่มีแคลอรี่สะสม) — เล่นโหมดเกมทายแคลอรี่อาหารก่อนแล้วกลับมาดูเปรียบเทียบได้</div>`;
+      calcOutput.innerHTML += `<div style="margin-top:10px" class="muted">ยังไม่มีแคลอรี่สะสมจากโหมดเกมอาหาร — เล่นโหมดทายแคลอรี่อาหารก่อนแล้วกลับมาดูเปรียบเทียบได้</div>`;
     }
   });
 
   btnResetCalc.addEventListener('click', ()=>{
-    calcSex.value = 'male'; calcAge.value = 16; calcWeight.value = 55; calcHeight.value = 165; calcActivity.value = '1.55';
+    calcSex.value = 'male';
+    calcAge.value = 16;
+    calcWeight.value = 55;
+    calcHeight.value = 165;
+    calcActivity.value = '1.55';
     calcOutput.style.display = 'none';
     delete calcOutput.dataset.tdee;
     delete calcOutput.dataset.bmr;
   });
 
-  /* -----------------------------------------------------
-      init: keep original UI behaviors
-  ----------------------------------------------------- */
-  updateAgeInfo(); // age info for main UI
+  /* init */
+  updateAgeInfo();
 </script>
 
 </body>
