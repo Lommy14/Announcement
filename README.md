@@ -160,6 +160,16 @@
       max-width: 220px;
     }
 
+    .filter-row .date-filter {
+      max-width: 150px;
+    }
+
+    .filter-row .inline {
+      display:flex;
+      gap:6px;
+      align-items:center;
+    }
+
     .badge {
       display: inline-block;
       padding: 2px 8px;
@@ -286,6 +296,8 @@
       <div class="filter-row">
         <span>ค้นหา:</span>
         <input type="text" id="searchInput" placeholder="พิมพ์คำค้นหัวข้อ / รายละเอียด">
+
+        <label style="margin:0 0 0 6px;">หมวดหมู่:</label>
         <select id="filterCategory">
           <option value="">ทุกหมวดหมู่</option>
           <option value="ทั่วไป">ทั่วไป</option>
@@ -295,6 +307,29 @@
           <option value="งานวิชาการ">งานวิชาการ</option>
           <option value="อื่น ๆ">อื่น ๆ</option>
         </select>
+
+        <!-- เปลี่ยนเป็น checkbox หลายตัวสำหรับกรองกลุ่มเป้าหมาย -->
+        <label style="margin:0 0 0 6px;">กลุ่มเป้าหมาย:</label>
+        <div id="filterTargets" class="checkbox-row" style="margin-left:6px;">
+          <label><input type="checkbox" value="นักเรียน" class="filter-target"> นักเรียน</label>
+          <label><input type="checkbox" value="ครู" class="filter-target"> ครู</label>
+          <label><input type="checkbox" value="ผู้ปกครอง" class="filter-target"> ผู้ปกครอง</label>
+          <label><input type="checkbox" value="บุคลากร" class="filter-target"> บุคลากร</label>
+          <label><input type="checkbox" value="บุคคลทั่วไป" class="filter-target"> บุคคลทั่วไป</label>
+        </div>
+
+        <label style="margin:0 0 0 6px;">วันที่จาก</label>
+        <input class="date-filter" type="date" id="filterFrom">
+
+        <label style="margin:0 0 0 6px;">ถึง</label>
+        <input class="date-filter" type="date" id="filterTo">
+
+        <div class="inline" style="margin-left:auto;">
+          <label style="font-weight:600;display:flex;align-items:center;gap:6px;">
+            <input type="checkbox" id="filterPinnedOnly"> แสดงเฉพาะที่ปักหมุด
+          </label>
+        </div>
+
         <button class="btn-ghost btn-small" id="btnClearAll">ลบข่าวทั้งหมด</button>
       </div>
 
@@ -318,6 +353,10 @@
   const newsListDiv = document.getElementById("newsList");
   const searchInput = document.getElementById("searchInput");
   const filterCategory = document.getElementById("filterCategory");
+  const filterFrom = document.getElementById("filterFrom");
+  const filterTo = document.getElementById("filterTo");
+  const filterPinnedOnly = document.getElementById("filterPinnedOnly");
+  const filterTargetCheckboxes = document.querySelectorAll(".filter-target");
 
   let newsItems = [];
 
@@ -357,29 +396,67 @@
     checkboxes.forEach(cb => cb.checked = false);
   }
 
-  // เรนเดอร์รายการข่าว
+  // ฟังก์ชันช่วยเปรียบเทียบวันที่ (YYYY-MM-DD)
+  function dateInRange(itemDate, from, to) {
+    if (!itemDate) return false;
+    if (from && itemDate < from) return false;
+    if (to && itemDate > to) return false;
+    return true;
+  }
+
+  // คืนค่ากลุ่มเป้าหมายที่ผู้ใช้ติ๊กในตัวกรอง (เป็น array ของค่าที่ติ๊ก)
+  function getSelectedFilterTargets() {
+    const selected = [];
+    filterTargetCheckboxes.forEach(cb => {
+      if (cb.checked) selected.push(cb.value);
+    });
+    return selected;
+  }
+
+  // เรนเดอร์รายการข่าว (ใช้ตัวกรองทั้งหมดที่กำหนด)
   function renderNews() {
     newsListDiv.innerHTML = "";
 
-    // กรองตามค้นหา และหมวดหมู่
     const keyword = searchInput.value.trim().toLowerCase();
     const catFilter = filterCategory.value;
+    const selectedTargets = getSelectedFilterTargets(); // array
+    const fromDate = filterFrom.value;
+    const toDate = filterTo.value;
+    const pinnedOnly = filterPinnedOnly.checked;
 
     let items = [...newsItems];
 
-    // ปักหมุดขึ้นก่อน
+    // ปักหมุดขึ้นก่อน + เรียงตาม createdAt (ใหม่สุดก่อน)
     items.sort((a, b) => {
       if (a.pinned && !b.pinned) return -1;
       if (!a.pinned && b.pinned) return 1;
-      // ถ้า pin เท่ากัน เรียงตามวันที่ (ใหม่อยู่บน)
       return (b.createdAt || 0) - (a.createdAt || 0);
     });
 
+    // กรองตามเงื่อนไขทั้งหมด
     items = items.filter(item => {
-      const text = (item.title + " " + item.content).toLowerCase();
-      const matchKeyword = keyword === "" || text.includes(keyword);
-      const matchCat = !catFilter || item.category === catFilter;
-      return matchKeyword && matchCat;
+      // 1) pinnedOnly
+      if (pinnedOnly && !item.pinned) return false;
+
+      // 2) keyword
+      const text = (item.title + " " + item.content + " " + (item.targets || []).join(" ")).toLowerCase();
+      if (keyword && !text.includes(keyword)) return false;
+
+      // 3) category
+      if (catFilter && item.category !== catFilter) return false;
+
+      // 4) targets filter (ถ้ามีการติ๊กอย่างน้อย 1 ข้อ)
+      if (selectedTargets.length > 0) {
+        // ให้ผ่านถ้ามีความตรงกันอย่างน้อยหนึ่งค่า (OR)
+        if (!item.targets || !Array.isArray(item.targets)) return false;
+        const anyMatch = selectedTargets.some(t => item.targets.includes(t));
+        if (!anyMatch) return false;
+      }
+
+      // 5) date range
+      if ((fromDate || toDate) && !dateInRange(item.date || "", fromDate, toDate)) return false;
+
+      return true;
     });
 
     if (items.length === 0) {
@@ -515,12 +592,17 @@
     renderNews();
   }
 
-  // Event listeners
+  // Event listeners (ตัวกรองเรียก renderNews ทันทีเมื่อมีการเปลี่ยนค่า)
   btnSave.addEventListener("click", addNews);
   btnClearForm.addEventListener("click", clearForm);
   btnClearAll.addEventListener("click", clearAllNews);
   searchInput.addEventListener("input", renderNews);
   filterCategory.addEventListener("change", renderNews);
+  filterFrom.addEventListener("change", renderNews);
+  filterTo.addEventListener("change", renderNews);
+  filterPinnedOnly.addEventListener("change", renderNews);
+  // เพิ่ม listener ให้ checkbox แต่ละอัน
+  filterTargetCheckboxes.forEach(cb => cb.addEventListener("change", renderNews));
 
   // เริ่มต้น
   setTodayDefault();
